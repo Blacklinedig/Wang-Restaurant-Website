@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wang Sushi Grill Wok & Bar · Kamp-Lintfort</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0c;
+    --paper: #f5f0e8;
+    --red: #c0392b;
+    --gold: #b8960c;
+    --muted: #7a7060;
+    --border: rgba(15,14,12,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 6vw 8vh;
+    overflow: hidden;
+    background: var(--ink);
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 40%, #2a1a0e 0%, #0f0e0c 60%);
+    z-index: 0;
+  }
+
+  /* decorative Japanese stroke circles */
+  .hero-bg::before, .hero-bg::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(184,150,12,0.18);
+  }
+  .hero-bg::before {
+    width: 700px; height: 700px;
+    top: -200px; right: -180px;
+  }
+  .hero-bg::after {
+    width: 400px; height: 400px;
+    top: -60px; right: 60px;
+  }
+
+  .kanji-bg {
+    position: absolute;
+    right: 6vw; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(120px, 18vw, 280px);
+    font-weight: 700;
+    color: rgba(184,150,12,0.08);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    z-index: 1;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 700px;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(38px, 7vw, 88px);
+    font-weight: 300;
+    line-height: 1.05;
+    color: #f5f0e8;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.4s forwards;
+  }
+
+  .hero-title em {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.6s forwards;
+  }
+
+  .stars {
+    display: flex; gap: 4px;
+    color: var(--gold);
+    font-size: 18px;
+  }
+
+  .rating-text {
+    color: #f5f0e8;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .price-badge {
+    color: rgba(245,240,232,0.5);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    border-left: 1px solid rgba(245,240,232,0.2);
+    padding-left: 24px;
+  }
+
+  .hero-actions {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.8s forwards;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 28px;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s;
+  }
+
+  .btn-primary {
+    background: var(--red);
+    color: #fff;
+  }
+  .btn-primary:hover { background: #a93226; transform: translateY(-2px); }
+
+  .btn-outline {
+    background: transparent;
+    color: #f5f0e8;
+    border: 1px solid rgba(245,240,232,0.3);
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 22px 6vw;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.4s, backdrop-filter 0.4s;
+  }
+
+  nav.scrolled {
+    background: rgba(15,14,12,0.92);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-logo {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #f5f0e8;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+  }
+
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(245,240,232,0.65);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── SECTION BASE ── */
+  section { padding: 100px 6vw; }
+
+  .section-label {
+    display: flex; align-items: center; gap: 16px;
+    font-size: 10px; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 20px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1; max-width: 60px;
+    height: 1px; background: var(--border);
+  }
+
+  h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(32px, 5vw, 58px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  /* ── ABOUT ── */
+  .about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .about-text p {
+    font-size: 16px;
+    line-height: 1.85;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 48px;
+  }
+
+  .stat {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 32px 28px;
+  }
+
+  .stat-num {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 42px;
+    font-weight: 300;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-desc {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .brush-card {
+    background: var(--ink);
+    aspect-ratio: 4/5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .brush-card .kanji-display {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 110px;
+    font-weight: 700;
+    color: rgba(184,150,12,0.25);
+    line-height: 1;
+    transform: rotate(-3deg);
+  }
+
+  .brush-tagline {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    color: rgba(245,240,232,0.4);
+    letter-spacing: 0.2em;
+  }
+
+  .floating-badge {
+    position: absolute;
+    bottom: -20px; left: -20px;
+    background: var(--red);
+    color: #fff;
+    padding: 20px 28px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  /* ── MENU ── */
+  .menu-section {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .menu-section h2 { color: var(--paper); }
+  .menu-section .section-label { color: rgba(245,240,232,0.35); }
+  .menu-section .section-label::after { background: rgba(245,240,232,0.1); }
+
+  .menu-intro {
+    font-size: 16px;
+    color: rgba(245,240,232,0.55);
+    max-width: 520px;
+    line-height: 1.8;
+    margin-bottom: 60px;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .menu-card {
+    background: #191815;
+    padding: 36px 32px;
+    border-top: 2px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+    cursor: default;
+  }
+  .menu-card:hover { border-color: var(--gold); background: #201e1a; }
+
+  .menu-card-icon {
+    font-size: 32px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .menu-card h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--paper);
+    margin-bottom: 12px;
+  }
+
+  .menu-card p {
+    font-size: 13px;
+    line-height: 1.75;
+    color: rgba(245,240,232,0.45);
+  }
+
+  .menu-tag {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(184,150,12,0.35);
+    padding: 4px 12px;
+  }
+
+  /* ── HIGHLIGHTS ── */
+  .highlights {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+
+  .highlight-block {
+    background: #f0ebe0;
+    padding: 56px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .highlight-block::before {
+    content: attr(data-num);
+    position: absolute;
+    top: 20px; right: 28px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 80px;
+    font-weight: 700;
+    color: rgba(15,14,12,0.05);
+    line-height: 1;
+  }
+
+  .highlight-block h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+
+  .highlight-block p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 340px;
+  }
+
+  /* ── REVIEWS ── */
+  .reviews-wrap {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .reviews-score {
+    position: sticky; top: 120px;
+  }
+
+  .score-big {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 96px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .score-stars {
+    display: flex; gap: 5px;
+    color: var(--gold);
+    font-size: 22px;
+    margin: 12px 0 10px;
+  }
+
+  .score-count {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .review-list {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+
+  .review-item {
+    background: #ede8de;
+    padding: 32px 36px;
+  }
+
+  .reviewer {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .reviewer-avatar {
+    width: 44px; height: 44px;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .reviewer-name {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .reviewer-meta {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .review-text {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #3a3630;
+  }
+
+  /* ── INFO ── */
+  .info-section {
+    background: var(--ink);
+    color: var(--paper);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .info-section h2 { color: var(--paper); }
+  .info-section .section-label { color: rgba(245,240,232,0.3); }
+  .info-section .section-label::after { background: rgba(245,240,232,0.1); }
+
+  .info-list {
+    list-style: none;
+    margin-top: 32px;
+  }
+
+  .info-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(245,240,232,0.08);
+    font-size: 14px;
+    color: rgba(245,240,232,0.7);
+  }
+
+  .info-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    width: 24px;
+    text-align: center;
+  }
+
+  .info-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .hours-grid {
+    display: grid;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .hour-row {
+    display: flex; justify-content: space-between;
+    font-size: 13px;
+    color: rgba(245,240,232,0.6);
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(245,240,232,0.06);
+  }
+
+  .hour-row .day { color: rgba(245,240,232,0.4); }
+  .hour-row .time { color: var(--paper); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0a0906;
+    color: rgba(245,240,232,0.35);
+    padding: 40px 6vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  footer .logo-foot {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    color: rgba(245,240,232,0.5);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .about { grid-template-columns: 1fr; gap: 48px; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .highlights { grid-template-columns: 1fr; }
+    .reviews-wrap { grid-template-columns: 1fr; gap: 40px; }
+    .reviews-score { position: static; }
+    .info-section { grid-template-columns: 1fr; gap: 48px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">王 Wang</a>
+  <ul class="nav-links">
+    <li><a href="#about">Über uns</a></li>
+    <li><a href="#menu">Speisekarte</a></li>
+    <li><a href="#reviews">Rezensionen</a></li>
+    <li><a href="#info">Kontakt</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="kanji-bg">王</div>
+  <div class="hero-content">
+    <p class="eyebrow">Kamp-Lintfort · Seit Jahren Ihr Lieblingsrestaurant</p>
+    <h1 class="hero-title">Wang<br><em>Sushi</em> Grill<br>Wok &amp; Bar</h1>
+    <div class="hero-meta">
+      <div class="stars">★★★★★</div>
+      <span class="rating-text">4,8 / 5,0</span>
+      <span class="price-badge">20–40 € pro Person</span>
+    </div>
+    <div class="hero-actions">
+      <a href="tel:028422628" class="btn btn-primary">Tisch reservieren</a>
+      <a href="#menu" class="btn btn-outline">Speisekarte ansehen</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="padding: 100px 6vw;">
+  <div class="about reveal">
+    <div class="about-text">
+      <p class="section-label">Über uns</p>
+      <h2>Frisch. Heiß.<br>Ausgezeichnet.</h2>
+      <p>Im Wang Sushi Grill Wok &amp; Bar vereinen wir die Aromen Asiens in einem modernen Ambiente. Jedes Gericht wird frisch zubereitet – direkt aus unserer offenen Küche auf Ihren Tisch.</p>
+      <p>Bestellen Sie bequem per Tablet, genießen Sie All-you-can-eat Sushi-Abende oder lassen Sie sich von unseren Wok-Gerichten und dem Grill überzeugen.</p>
+      <div class="about-stats">
+        <div class="stat">
+          <span class="stat-num">4,8</span>
+          <span class="stat-desc">Google Bewertung</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">116</span>
+          <span class="stat-desc">Rezensionen</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">5×</span>
+          <span class="stat-desc">Stammgäste kommen wieder</span>
+        </div>
+        <div class="stat" style="background: var(--red);">
+          <span class="stat-num" style="color:#fff;">All You<br><span style="font-size:22px">Can Eat</span></span>
+          <span class="stat-desc">Sushi Abende</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <div class="brush-card">
+        <div class="kanji-display">寿司</div>
+        <span class="brush-tagline">Authentisch · Frisch · Leidenschaftlich</span>
+      </div>
+      <div class="floating-badge">Tablet Bestellung</div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu" class="menu-section reveal">
+  <p class="section-label">Unsere Küche</p>
+  <h2>Was uns<br>auszeichnet</h2>
+  <p class="menu-intro">Von klassischem Sushi bis zu wärmenden Wok-Gerichten — unser Menü vereint Vielfalt mit Qualität.</p>
+
+  <div class="menu-grid">
+    <div class="menu-card">
+      <span class="menu-card-icon">🍣</span>
+      <h3>Sushi & Maki</h3>
+      <p>Frisch gerollte Maki, Nigiri und Signature Rolls — täglich zubereit mit erstklassigem Fisch.</p>
+      <span class="menu-tag">Signature</span>
+    </div>
+    <div class="menu-card">
+      <span class="menu-card-icon">🥩</span>
+      <h3>Grill & Fleisch</h3>
+      <p>Zarte Fleischgerichte vom Grill, würzig mariniert und perfekt gegart – ein Genuss für Fleischliebhaber.</p>
+      <span class="menu-tag">Beliebt</span>
+    </div>
+    <div class="menu-card">
+      <span class="menu-card-icon">🥘</span>
+      <h3>Wok-Gerichte</h3>
+      <p>Klassische asiatische Wok-Küche mit frischem Gemüse, Nudeln und cremigen Saucen.</p>
+      <span class="menu-tag">Hausgemacht</span>
+    </div>
+    <div class="menu-card">
+      <span class="menu-card-icon">🍠</span>
+      <h3>Süßkartoffel Pommes</h3>
+      <p>Unser Geheimtipp: Knusprig gebratene Süßkartoffel-Pommes – von Gästen immer wieder empfohlen.</p>
+      <span class="menu-tag">Fan Favorit</span>
+    </div>
+    <div class="menu-card">
+      <span class="menu-card-icon">🥥</span>
+      <h3>Desserts</h3>
+      <p>Kokosnusskugeln, Apfeltaschen und weitere süße Kreationen — der perfekte Abschluss.</p>
+      <span class="menu-tag">Süß & Leicht</span>
+    </div>
+    <div class="menu-card" style="border-color: var(--gold); background: #1e1c18;">
+      <span class="menu-card-icon">🍱</span>
+      <h3>All You Can Eat</h3>
+      <p>Unbegrenzter Sushi-Genuss an bestimmten Abenden — Vielfalt ohne Limit, Qualität inklusive.</p>
+      <span class="menu-tag" style="border-color: var(--red); color: var(--red);">Special</span>
+    </div>
+  </div>
+</section>
+
+<!-- HIGHLIGHTS -->
+<section style="padding: 4px 0;" class="reveal">
+  <div class="highlights">
+    <div class="highlight-block" data-num="01">
+      <h3>Bestellen per Tablet</h3>
+      <p>Bestellen Sie bequem direkt am Tisch über unsere intuitiven Tablets — einfach, schnell und modern.</p>
+    </div>
+    <div class="highlight-block" data-num="02" style="background: var(--ink); color: var(--paper);">
+      <h3 style="color: var(--paper);">Immer frisch & heiß</h3>
+      <p style="color: rgba(245,240,232,0.5);">Jedes Gericht verlässt unsere Küche frisch zubereitet — kein Warmhalten, kein Kompromiss.</p>
+    </div>
+    <div class="highlight-block" data-num="03" style="background: var(--red); color: #fff;">
+      <h3 style="color: #fff;">Freundliches Team</h3>
+      <p style="color: rgba(255,255,255,0.75);">Unser aufmerksames Personal sorgt dafür, dass Sie sich vom ersten Moment an willkommen fühlen.</p>
+    </div>
+    <div class="highlight-block" data-num="04">
+      <h3>Angenehmes Ambiente</h3>
+      <p>Modernes Design, gemütliche Fensterplätze und eine entspannte Atmosphäre für jeden Anlass.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews" style="padding: 100px 6vw; background: var(--paper);">
+  <div class="reviews-wrap reveal">
+    <div class="reviews-score">
+      <p class="section-label">Gäste­stimmen</p>
+      <div class="score-big">4,8</div>
+      <div class="score-stars">★★★★★</div>
+      <p class="score-count">116 Bewertungen · Google</p>
+    </div>
+    <div class="review-list">
+      <div class="review-item">
+        <div class="reviewer">
+          <div class="reviewer-avatar">B</div>
+          <div>
+            <div class="reviewer-name">Birgit P.</div>
+            <div class="reviewer-meta">Local Guide · vor 4 Monaten</div>
+          </div>
+          <div class="stars" style="margin-left: auto; color: var(--gold);">★★★★★</div>
+        </div>
+        <p class="review-text">„Wir waren das erste Mal bei Wang Sushi Grill Wok und wir waren vom Ambiente und dem Essen begeistert. Wir wurden freundlich empfangen und konnten uns einen Fensterplatz aussuchen."</p>
+      </div>
+      <div class="review-item">
+        <div class="reviewer">
+          <div class="reviewer-avatar">S</div>
+          <div>
+            <div class="reviewer-name">Sonja Senden</div>
+            <div class="reviewer-meta">vor 2 Monaten</div>
+          </div>
+          <div class="stars" style="margin-left: auto; color: var(--gold);">★★★★★</div>
+        </div>
+        <p class="review-text">„Wir waren mittlerweile schon fünfmal dort und sind jedes Mal wieder begeistert. Das Essen ist immer frisch zubereitet, unglaublich lecker und von sehr guter Qualität. Man merkt einfach, dass hier mit Sorgfalt gearbeitet wird."</p>
+      </div>
+      <div class="review-item">
+        <div class="reviewer">
+          <div class="reviewer-avatar">K</div>
+          <div>
+            <div class="reviewer-name">Kevin Kempkes</div>
+            <div class="reviewer-meta">Local Guide · vor 9 Monaten</div>
+          </div>
+          <div class="stars" style="margin-left: auto; color: var(--gold);">★★★★★</div>
+        </div>
+        <p class="review-text">„Das Sushi ist lecker, sowie die Fleischgerichte auch. Süßkartoffel Pommes sind sehr lecker. Sowie zum Nachtisch die Kokosnusskugeln oder die Apfeltaschen — auf jeden Fall weiter zu empfehlen!"</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INFO -->
+<section id="info" class="info-section reveal">
+  <div>
+    <p class="section-label">Besuch planen</p>
+    <h2>Finden Sie<br>uns hier</h2>
+    <ul class="info-list">
+      <li>
+        <span class="info-icon">📍</span>
+        <div>
+          <span class="info-label">Adresse</span>
+          Prinzenstraße 64<br>47475 Kamp-Lintfort
+        </div>
+      </li>
+      <li>
+        <span class="info-icon">📞</span>
+        <div>
+          <span class="info-label">Telefon</span>
+          <a href="tel:028422628" style="color: var(--gold); text-decoration: none;">02842 2628</a>
+        </div>
+      </li>
+      <li>
+        <span class="info-icon">💶</span>
+        <div>
+          <span class="info-label">Preisklasse</span>
+          20 – 40 € pro Person
+        </div>
+      </li>
+      <li>
+        <span class="info-icon">🛵</span>
+        <div>
+          <span class="info-label">Service</span>
+          Speisen vor Ort · Drive-in · Kontaktlose Lieferung
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div>
+    <p class="section-label">Öffnungszeiten</p>
+    <h2 style="font-size: clamp(24px, 3vw, 36px);">Wir freuen<br>uns auf Sie</h2>
+    <div class="hours-grid">
+      <div class="hour-row"><span class="day">Montag</span><span class="time">11:30 – 22:00</span></div>
+      <div class="hour-row"><span class="day">Dienstag</span><span class="time">11:30 – 22:00</span></div>
+      <div class="hour-row"><span class="day">Mittwoch</span><span class="time">11:30 – 22:00</span></div>
+      <div class="hour-row"><span class="day">Donnerstag</span><span class="time">11:30 – 22:00</span></div>
+      <div class="hour-row"><span class="day">Freitag</span><span class="time">11:30 – 22:30</span></div>
+      <div class="hour-row"><span class="day">Samstag</span><span class="time">11:30 – 22:30</span></div>
+      <div class="hour-row"><span class="day">Sonntag</span><span class="time">12:00 – 22:00</span></div>
+    </div>
+    <div style="margin-top: 40px;">
+      <a href="tel:028422628" class="btn btn-primary">Jetzt anrufen & reservieren</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="logo-foot">王 Wang Sushi Grill Wok & Bar</span>
+  <span>Prinzenstraße 64 · 47475 Kamp-Lintfort</span>
+  <span>© 2025</span>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
